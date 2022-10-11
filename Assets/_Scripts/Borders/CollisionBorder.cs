@@ -8,7 +8,7 @@ public class CollisionBorder : MonoBehaviour
     {
         if (collision.TryGetComponent(out BallController ball))
         {
-            ball.AddForceMoveBorder();
+            ball.BorderAddForceMove();
         }
     }
 }

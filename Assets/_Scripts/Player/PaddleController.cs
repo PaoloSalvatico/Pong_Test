@@ -9,10 +9,9 @@ public class PaddleController : MonoBehaviour
 
     [SerializeField] protected float _paddleSpeedPlayer;
     [SerializeField] protected float _paddleSpeedAI;
-    [SerializeField] protected BallController _ball;
 
-    private float inputY;
-    private Vector2 target;
+    private float _inputY;
+    private Vector2 _target;
     private Vector2 _moveAmount;
     private Vector2 _moveDirection;
     private Vector2 _smoothVelocity;
@@ -27,7 +26,7 @@ public class PaddleController : MonoBehaviour
     {
         if(collision.TryGetComponent(out BallController ball))
         {
-            ball.AddForceMovePlayer();
+            ball.PlayerAddForceMove(_inputY);
         }
     }
 
@@ -36,23 +35,24 @@ public class PaddleController : MonoBehaviour
         //Enable player 1 inputs
         if (_playerMode == PlayerMode.Player1)
         {
-            inputY = InputManager.Instance.Player1MoveValue.y;
+            _inputY = InputManager.Instance.Player1MoveValue.y;
         }
         //Enable Player 2 inputs
         else if(_playerMode == PlayerMode.Player2)
         {
-            inputY = InputManager.Instance.Player2MoveValue.y;
+            _inputY = InputManager.Instance.Player2MoveValue.y;
         }
         //Enable AI inputs
         else
         {
-            inputY = _ball.transform.position.y;
-            target = new Vector2(transform.position.x, inputY);
-            _moveAmount = Vector2.SmoothDamp(_moveAmount, target, ref _smoothVelocity, .4f);
+            if (UIFieldManager.Instance.Ball == null) return;
+            _inputY = UIFieldManager.Instance.Ball.transform.position.y;
+            _target = new Vector2(transform.position.x, _inputY);
+            _moveAmount = Vector2.SmoothDamp(_moveAmount, _target, ref _smoothVelocity, .4f);
             return;
         }
 
-        _moveDirection = new Vector2(0, inputY).normalized;
+        _moveDirection = new Vector2(0, _inputY).normalized;
     }
 
     private void FixedUpdate()
@@ -60,9 +60,10 @@ public class PaddleController : MonoBehaviour
         if(_playerMode == PlayerMode.AI)
         {
             float step = _paddleSpeedAI * Time.fixedDeltaTime;
-            transform.position = Vector2.MoveTowards(_moveAmount, target, step);
+            transform.position = Vector2.MoveTowards(_moveAmount, _target, step);
             return;
         }
+
         _rigidbody.velocity = _moveDirection * _paddleSpeedPlayer;
     }
 }

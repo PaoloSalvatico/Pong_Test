@@ -1,5 +1,5 @@
 {
-    "name": "Gameinputs",
+    "name": "GameInputs",
     "maps": [
         {
             "name": "Player1",
@@ -98,6 +98,54 @@
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
+                }
+            ]
+        },
+        {
+            "name": "UI",
+            "id": "2051b105-5d7f-4374-96dd-5171273f5549",
+            "actions": [
+                {
+                    "name": "OpenUI",
+                    "type": "Value",
+                    "id": "ad2285f5-8a11-4d3b-b40b-22531c5f51d3",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "fb638fbf-5677-4663-a991-73fb0afd9efe",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "6b712b43-f4a7-4297-82b0-aeccf0ac9a88",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenUI",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3b0e65a7-b28d-4fec-9e13-08bfbf32362c",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

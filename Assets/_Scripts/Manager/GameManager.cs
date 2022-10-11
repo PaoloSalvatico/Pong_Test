@@ -5,28 +5,45 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : PersistentSingleton<GameManager>
 {
+    private string _scorePoints;
     private int _player1ScorePoints;
     private int _player2ScorePoints;
-
-    private string _winningPlayer;
     private int _numberOfAIinGame;
-
-
-    public void EndMatch()
-    {
-        //switch
-        // _winningPlayer = Player 1, player 2, It's a draw
-
-        //then load summary scene that will stamp the message _winningPlayer
-    }
+    private string _winningPlayer;
 
     public void StartGame(int i)
     {
         _numberOfAIinGame = i;
+        _player1ScorePoints = 0;
+        _player2ScorePoints = 0;
         SceneManager.LoadScene("Field");
     }
 
+    public void EndGame()
+    {
+        if (_player1ScorePoints > _player2ScorePoints) _winningPlayer = "Player 1 won";
+        else if (_player1ScorePoints < _player2ScorePoints) _winningPlayer = "Player 2 won";
+        else _winningPlayer = "It's a draw";
+
+        ScorePoints = _player1ScorePoints + " - " + _player2ScorePoints;
+        ScorePoints = ($"Score: {_player1ScorePoints} - {_player2ScorePoints}");
+
+        SceneManager.LoadScene("Summary");
+    }
+
+    public void BackToMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
+
+    public string ScorePoints { get => _scorePoints; set => _scorePoints = value; }
     public int Player1ScorePoints { get => _player1ScorePoints; set => _player1ScorePoints = value; }
     public int Player2ScorePoints { get => _player2ScorePoints; set => _player2ScorePoints = value; }
     public int NumberOfAIinGame { get => _numberOfAIinGame; set => _numberOfAIinGame = value; }
+    public string WinningPlayer { get => _winningPlayer; set => _winningPlayer = value; }
 }

@@ -19,14 +19,38 @@ public class UIFieldManager : Singleton<UIFieldManager>
     [Header("Player Mode")]
     [SerializeField] private List<PaddleController> _playerList;
 
-    private int _actualTime;
+    [Header("Pause Manager")]
+    [SerializeField] private GameObject _pausePanel;
 
-    private void Start()
+    [Header("Ball Manager")]
+    [SerializeField] private BallController _ballPrefab;
+    [SerializeField] private Transform _ballStartingPos;
+
+    private int _actualTime;
+    private BallController _ball;
+
+    protected override void Awake()
     {
+        base.Awake();
         Init();
+        SpawnBallGame();
         SetPlayerMode();
     }
 
+    private void OnEnable()
+    {
+        InputManager.Instance.OnPausePerformed += OpenOrClosePausePanel;
+    }
+
+    private void OnDisable()
+    {
+        InputManager.Instance.OnPausePerformed -= OpenOrClosePausePanel;
+    }
+
+
+    /// <summary>
+    /// Set up timer, UI and score
+    /// </summary>
     public void Init()
     {
         _actualTime = _startingTime;
@@ -34,9 +58,18 @@ public class UIFieldManager : Singleton<UIFieldManager>
         _timerText.color = _greenColor;
         _player1Score.text = 0.ToString();
         _player2Score.text = 0.ToString();
+        Time.timeScale = 1;
         StartCoroutine(Timer());
     }
 
+    public void SpawnBallGame()
+    {
+        _ball = Instantiate(_ballPrefab);
+    }
+
+    /// <summary>
+    /// Set player mode to the two different players, chosen in main menu
+    /// </summary>
     public void SetPlayerMode()
     {
         var manager = GameManager.Instance;
@@ -63,10 +96,14 @@ public class UIFieldManager : Singleton<UIFieldManager>
         }
         else
         {
-            // TODO load scene by Game manager passing who won
+            GameManager.Instance.EndGame();
         }
     }
 
+    /// <summary>
+    /// Update UI after player score
+    /// </summary>
+    /// <param name="player">the player who scores</param>
     public void Score(int player)
     {
         GameManager manager = GameManager.Instance;
@@ -81,4 +118,18 @@ public class UIFieldManager : Singleton<UIFieldManager>
             _player2Score.text = manager.Player2ScorePoints.ToString();
         }
     }
+
+    public void OpenOrClosePausePanel()
+    {
+        _pausePanel.SetActive(!_pausePanel.activeInHierarchy);
+        Time.timeScale = _pausePanel.activeInHierarchy ? 0 : 1;
+    }
+
+    public void BackToMainMenu()
+    {
+        GameManager.Instance.BackToMainMenu();
+    }
+
+    public Transform BallStartingPos { get => _ballStartingPos; set => _ballStartingPos = value; }
+    public BallController Ball { get => _ball; set => _ball = value; }
 }
