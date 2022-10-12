@@ -5,6 +5,7 @@ using UnityEngine;
 public class PaddleController : MonoBehaviour
 {
     protected Rigidbody2D _rigidbody;
+    protected Animator _animator;
 
     [Header("Paddle Data")]
     [SerializeField] private PlayerMode _playerMode;
@@ -20,6 +21,7 @@ public class PaddleController : MonoBehaviour
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
+        _animator = GetComponentInParent<Animator>();
         _moveAmount = transform.position;
     }
 
@@ -28,6 +30,7 @@ public class PaddleController : MonoBehaviour
         if(collision.TryGetComponent(out BallController ball))
         {
             ball.PlayerAddForceMove(_inputY);
+            _animator.SetTrigger("BallHitted");
         }
     }
 

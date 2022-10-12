@@ -137,9 +137,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 349e4228bfc075241b6dd74caa28b8c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _ballSpeed: 5
-  _ballAcceleration: 1.11
-  _material: {fileID: 2100000, guid: c44e57395d5d72345932e3aafa39ff11, type: 2}
+  _backgroundMaterial: {fileID: 2100000, guid: 5f7cc961b0d7915438dee843dc5d28a9, type: 2}
+  _data: {fileID: 11400000, guid: 13384f457c3fad44aafa91dcc9c9af57, type: 2}
 --- !u!96 &5405516850366567875
 TrailRenderer:
   serializedVersion: 2

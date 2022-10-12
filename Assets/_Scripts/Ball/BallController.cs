@@ -7,11 +7,10 @@ public class BallController : MonoBehaviour
     private Rigidbody2D _rigidbody;
     private CircleCollider2D _collider;
 
-    [Header("Ball Stats")]
-    [SerializeField] private float _ballSpeed;
-    [SerializeField] [Range(1, 1.5f)]private float _ballAcceleration;
-    [SerializeField] Material _material;
+    [SerializeField] Material _backgroundMaterial;
 
+    [Header("Ball Stats")]
+    [SerializeField] BallScriptableObj _data;
 
     private void Awake()
     {
@@ -28,7 +27,7 @@ public class BallController : MonoBehaviour
     public void Init()
     {
         transform.position = UIFieldManager.Instance.BallStartingPos.position;
-        _material.color = Color.white;
+        _data.material.color = Color.white;
 
         var dir = 1;
         if (Random.value > .5f) dir = -1;
@@ -43,7 +42,7 @@ public class BallController : MonoBehaviour
     public void AddStartForceMove(float direction)
     {
         Vector2 vector = new Vector2(direction, 0);
-        _rigidbody.velocity = vector * _ballSpeed;
+        _rigidbody.velocity = vector * _data.ballSpeed;
     }
 
     public void BorderAddForceMove()
@@ -65,23 +64,23 @@ public class BallController : MonoBehaviour
         }
 
         Vector2 dir = new Vector2(-velocity.x, velocity.y);
-        float delta = 1.2f;
+        float bonusAcceleration = 1.2f;
 
         // Input towards down
         if(paddleDirectionInput < 0)
         {
-            if (velocity.y > 0) delta *= -1;
-            dir = new Vector2(-velocity.x, velocity.y * delta);
+            if (velocity.y > 0) bonusAcceleration *= -1;
+            dir = new Vector2(-velocity.x, velocity.y * bonusAcceleration);
         }
 
         //Input towards up
         else if(paddleDirectionInput > 0)
         {
-            if (velocity.y < 0) delta *= -1;
-            dir = new Vector2(-velocity.x, velocity.y * delta);
+            if (velocity.y < 0) bonusAcceleration *= -1;
+            dir = new Vector2(-velocity.x, velocity.y * bonusAcceleration);
         }
 
-        _rigidbody.velocity = dir * _ballAcceleration;
+        _rigidbody.velocity = dir * _data.ballAcceleration;
 
         ContactFeedback();
     }
@@ -89,6 +88,10 @@ public class BallController : MonoBehaviour
 
     private void ContactFeedback()
     {
-        _material.color = Random.ColorHSV();
+        _data.material.color = Random.ColorHSV();
+        while (_data.material.color == _backgroundMaterial.color)
+        {
+            _data.material.color = Random.ColorHSV();
+        }
     }
 }

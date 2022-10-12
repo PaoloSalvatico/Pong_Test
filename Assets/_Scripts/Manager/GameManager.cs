@@ -16,24 +16,24 @@ public class GameManager : PersistentSingleton<GameManager>
         _numberOfAIinGame = i;
         _player1ScorePoints = 0;
         _player2ScorePoints = 0;
-        SceneManager.LoadScene("Field");
+        SceneManager.LoadScene(CostantVariables.FIELDSCENE);
     }
 
     public void EndGame()
     {
-        if (_player1ScorePoints > _player2ScorePoints) _winningPlayer = "Player 1 won";
-        else if (_player1ScorePoints < _player2ScorePoints) _winningPlayer = "Player 2 won";
-        else _winningPlayer = "It's a draw";
+        if (_player1ScorePoints > _player2ScorePoints) _winningPlayer = CostantVariables.PLAYER1WINS;
+        else if (_player1ScorePoints < _player2ScorePoints) _winningPlayer = CostantVariables.PLAYER2WINS;
+        else _winningPlayer = CostantVariables.DRAW;
 
         ScorePoints = _player1ScorePoints + " - " + _player2ScorePoints;
         ScorePoints = ($"Score: {_player1ScorePoints} - {_player2ScorePoints}");
 
-        SceneManager.LoadScene("Summary");
+        SceneManager.LoadScene(CostantVariables.SUMMARYSCENE);
     }
 
     public void BackToMainMenu()
     {
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene(CostantVariables.MAINMENUSCENE);
     }
 
     public void ExitGame()
