@@ -1354,8 +1354,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerMode: 1
-  _paddleSpeedPlayer: 8
-  _paddleSpeedAI: 6
+  _playerData: {fileID: 11400000, guid: 8a6514cb5e70c294e8eed2d0ccde648c, type: 2}
+  _aiData: {fileID: 11400000, guid: b6e4c6cb9f8edb64089e7ae176473363, type: 2}
 --- !u!61 &1221109670
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2451,8 +2451,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerMode: 0
-  _paddleSpeedPlayer: 6
-  _paddleSpeedAI: 4
+  _playerData: {fileID: 11400000, guid: 8a6514cb5e70c294e8eed2d0ccde648c, type: 2}
+  _aiData: {fileID: 11400000, guid: b6e4c6cb9f8edb64089e7ae176473363, type: 2}
 --- !u!1 &2076972973
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MainMenuManager : MonoBehaviour
 {
+    // MainMenu buttons functions
     public void StartGame(int i)
     {
         GameManager.Instance.StartGame(i);

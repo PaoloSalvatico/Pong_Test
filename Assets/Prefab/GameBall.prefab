@@ -139,7 +139,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ballSpeed: 5
   _ballAcceleration: 1.11
-  _ballStartingPos: {fileID: 0}
+  _material: {fileID: 2100000, guid: c44e57395d5d72345932e3aafa39ff11, type: 2}
 --- !u!96 &5405516850366567875
 TrailRenderer:
   serializedVersion: 2

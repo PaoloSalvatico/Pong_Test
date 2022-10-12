@@ -33,8 +33,8 @@ public class UIFieldManager : Singleton<UIFieldManager>
     {
         base.Awake();
         Init();
-        SpawnBallGame();
         SetPlayerMode();
+        SpawnBallGame();
     }
 
     private void OnEnable()
@@ -73,14 +73,15 @@ public class UIFieldManager : Singleton<UIFieldManager>
     public void SetPlayerMode()
     {
         var manager = GameManager.Instance;
-        for(int i = 0; i < manager.NumberOfAIinGame; i++)
+        if (manager.NumberOfAIinGame == 0)
         {
-            _playerList[i]._playerMode = PlayerMode.AI;
+            _playerList[0].PlayerMode = PlayerMode.Player1;
+            _playerList[1].PlayerMode = PlayerMode.Player2;
+            return;
         }
-        if(manager.NumberOfAIinGame == 0)
+        for (int i = 0; i < manager.NumberOfAIinGame; i++)
         {
-            _playerList[0]._playerMode = PlayerMode.Player1;
-            _playerList[1]._playerMode = PlayerMode.Player2;
+            _playerList[i].PlayerMode = PlayerMode.AI;
         }
     }
 

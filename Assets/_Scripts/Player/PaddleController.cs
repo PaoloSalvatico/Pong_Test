@@ -5,10 +5,11 @@ using UnityEngine;
 public class PaddleController : MonoBehaviour
 {
     protected Rigidbody2D _rigidbody;
-    public PlayerMode _playerMode;
 
-    [SerializeField] protected float _paddleSpeedPlayer;
-    [SerializeField] protected float _paddleSpeedAI;
+    [Header("Paddle Data")]
+    [SerializeField] private PlayerMode _playerMode;
+    [SerializeField] private PaddleScriptableObj _playerData;
+    [SerializeField] private PaddleScriptableObj _aiData;
 
     private float _inputY;
     private Vector2 _target;
@@ -32,23 +33,25 @@ public class PaddleController : MonoBehaviour
 
     private void Update()
     {
-        //Enable player 1 inputs
+        // Enable player 1 inputs
         if (_playerMode == PlayerMode.Player1)
         {
             _inputY = InputManager.Instance.Player1MoveValue.y;
         }
-        //Enable Player 2 inputs
+
+        // Enable Player 2 inputs
         else if(_playerMode == PlayerMode.Player2)
         {
             _inputY = InputManager.Instance.Player2MoveValue.y;
         }
-        //Enable AI inputs
+
+        // Enable AI inputs
         else
         {
             if (UIFieldManager.Instance.Ball == null) return;
             _inputY = UIFieldManager.Instance.Ball.transform.position.y;
             _target = new Vector2(transform.position.x, _inputY);
-            _moveAmount = Vector2.SmoothDamp(_moveAmount, _target, ref _smoothVelocity, .4f);
+            _moveAmount = Vector2.SmoothDamp(_moveAmount, _target, ref _smoothVelocity, .25f);
             return;
         }
 
@@ -59,11 +62,13 @@ public class PaddleController : MonoBehaviour
     {
         if(_playerMode == PlayerMode.AI)
         {
-            float step = _paddleSpeedAI * Time.fixedDeltaTime;
+            float step = _aiData.paddleSpeed * Time.fixedDeltaTime;
             transform.position = Vector2.MoveTowards(_moveAmount, _target, step);
             return;
         }
 
-        _rigidbody.velocity = _moveDirection * _paddleSpeedPlayer;
+        _rigidbody.velocity = _moveDirection * _playerData.paddleSpeed;
     }
+
+    public PlayerMode PlayerMode { get => _playerMode; set => _playerMode = value; }
 }

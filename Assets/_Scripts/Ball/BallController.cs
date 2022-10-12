@@ -6,12 +6,11 @@ public class BallController : MonoBehaviour
 {
     private Rigidbody2D _rigidbody;
     private CircleCollider2D _collider;
-    private SpriteRenderer _spriteRenderer;
-    private TrailRenderer _trail;
 
     [Header("Ball Stats")]
     [SerializeField] private float _ballSpeed;
     [SerializeField] [Range(1, 1.5f)]private float _ballAcceleration;
+    [SerializeField] Material _material;
 
 
     private void Awake()
@@ -19,8 +18,6 @@ public class BallController : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
         _collider = GetComponent<CircleCollider2D>();
         _collider.isTrigger = true;
-        _spriteRenderer = GetComponent<SpriteRenderer>();
-        _trail = GetComponent<TrailRenderer>();
 
         Init();
     }
@@ -31,7 +28,7 @@ public class BallController : MonoBehaviour
     public void Init()
     {
         transform.position = UIFieldManager.Instance.BallStartingPos.position;
-        _trail.enabled = true;
+        _material.color = Color.white;
 
         var dir = 1;
         if (Random.value > .5f) dir = -1;
@@ -43,11 +40,9 @@ public class BallController : MonoBehaviour
     /// <summary>
     /// Functions to apply force to the ball: on the start, by border and by player
     /// </summary>
-    public void AddStartForceMove(float dir)
+    public void AddStartForceMove(float direction)
     {
-        float y = Random.Range(-1f, 1f);
-        Vector2 vector = new Vector2(dir, y);
-
+        Vector2 vector = new Vector2(direction, 0);
         _rigidbody.velocity = vector * _ballSpeed;
     }
 
@@ -57,22 +52,43 @@ public class BallController : MonoBehaviour
         _rigidbody.velocity = new Vector2(velocity.x, -velocity.y);
     }
 
-    public void PlayerAddForceMove(float i)
+    public void PlayerAddForceMove(float paddleDirectionInput)
     {
         Vector2 velocity = _rigidbody.velocity;
-        float delta = 1;
-        if (velocity.y < 0) delta = i * -1;
-        if (velocity.y == Mathf.Epsilon) delta = Random.value;
-        _rigidbody.velocity = new Vector2(-velocity.x, velocity.y * delta) * _ballAcceleration;
+
+        // Controll to avoid stall if both player are still and the ball's velocity.y is 0
+        if (velocity.y == 0)
+        {
+            float random = Random.Range(0, 2);
+            if(random == 0) velocity.y = Random.Range(-1, -.5f);
+            if (random == 1) velocity.y = Random.Range(.5f, 1f);
+        }
+
+        Vector2 dir = new Vector2(-velocity.x, velocity.y);
+        float delta = 1.2f;
+
+        // Input towards down
+        if(paddleDirectionInput < 0)
+        {
+            if (velocity.y > 0) delta *= -1;
+            dir = new Vector2(-velocity.x, velocity.y * delta);
+        }
+
+        //Input towards up
+        else if(paddleDirectionInput > 0)
+        {
+            if (velocity.y < 0) delta *= -1;
+            dir = new Vector2(-velocity.x, velocity.y * delta);
+        }
+
+        _rigidbody.velocity = dir * _ballAcceleration;
+
         ContactFeedback();
     }
     #endregion
 
     private void ContactFeedback()
     {
-        var material = _spriteRenderer.material;
-        material.color = Random.ColorHSV();
+        _material.color = Random.ColorHSV();
     }
-
-    public TrailRenderer Trail { get => _trail; set => _trail = value; }
 }
