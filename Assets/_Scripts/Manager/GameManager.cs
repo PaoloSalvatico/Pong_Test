@@ -11,9 +11,9 @@ public class GameManager : PersistentSingleton<GameManager>
     private int _numberOfAIinGame;
     private string _winningPlayer;
 
-    public void StartGame(int i)
+    public void StartGame(int numberOfAI)
     {
-        _numberOfAIinGame = i;
+        _numberOfAIinGame = numberOfAI;
         _player1ScorePoints = 0;
         _player2ScorePoints = 0;
         SceneManager.LoadScene(CostantVariables.FIELDSCENE);

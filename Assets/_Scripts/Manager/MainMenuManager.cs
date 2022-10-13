@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class MainMenuManager : MonoBehaviour
 {
-    // MainMenu buttons functions
-    public void StartGame(int i)
+    /// <summary>
+    /// MainMenu scene buttons functions
+    /// </summary>
+
+    public void StartGame(int numberOfAI)
     {
-        GameManager.Instance.StartGame(i);
+        GameManager.Instance.StartGame(numberOfAI);
     }
 
     public void ExitGame()

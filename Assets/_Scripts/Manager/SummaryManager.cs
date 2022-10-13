@@ -15,6 +15,10 @@ public class SummaryManager : MonoBehaviour
         _scorePointsText.text = GameManager.Instance.ScorePoints;
     }
 
+    /// <summary>
+    /// Summaru scene buttons functions
+    /// </summary>
+
     public void BackToMenu()
     {
         GameManager.Instance.BackToMainMenu();
