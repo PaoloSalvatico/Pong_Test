@@ -64,7 +64,7 @@ public class BallController : MonoBehaviour
         }
 
         Vector2 dir = new Vector2(-velocity.x, velocity.y);
-        float bonusAcceleration = 1.2f;
+        float bonusAcceleration = 1.4f;
 
         // Input towards down
         if(paddleDirectionInput < 0)

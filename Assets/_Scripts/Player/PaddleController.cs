@@ -29,7 +29,7 @@ public class PaddleController : MonoBehaviour
     {
         if(collision.TryGetComponent(out BallController ball))
         {
-            ball.PlayerAddForceMove(_inputY);
+            ball.PlayerAddForceMove(_rigidbody.velocity.y);
             _animator.SetTrigger("BallHitted");
         }
     }
